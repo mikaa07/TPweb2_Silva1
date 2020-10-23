@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-10-2020 a las 14:33:16
+-- Tiempo de generación: 23-10-2020 a las 22:45:36
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.2.33
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `producto` (
   `id_producto` int(10) NOT NULL,
+  `id_variedad` int(20) NOT NULL,
   `Nombre_producto` text NOT NULL,
   `Precio` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -37,10 +38,11 @@ CREATE TABLE `producto` (
 -- Volcado de datos para la tabla `producto`
 --
 
-INSERT INTO `producto` (`id_producto`, `Nombre_producto`, `Precio`) VALUES
-(1, 'Pizza', 250),
-(2, 'Empanada', 440),
-(3, 'Tarta', 200);
+INSERT INTO `producto` (`id_producto`, `id_variedad`, `Nombre_producto`, `Precio`) VALUES
+(4, 3, 'Pizza', 240),
+(5, 6, 'Tarta', 200),
+(6, 4, 'Empanada', 440),
+(7, 5, 'Pizza', 240);
 
 -- --------------------------------------------------------
 
@@ -54,29 +56,39 @@ CREATE TABLE `usuario` (
   `clave` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id_usuario`, `nombre`, `clave`) VALUES
+(1, 'mikaa', '1234'),
+(2, 'Flopy', 'fuchyta'),
+(3, 'mikaa', '1234'),
+(4, 'cristian', '1234'),
+(5, 'mikaa', '1234');
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `variedades`
+-- Estructura de tabla para la tabla `variedad`
 --
 
-CREATE TABLE `variedades` (
+CREATE TABLE `variedad` (
   `id_variedad` int(10) NOT NULL,
-  `id_producto` int(10) NOT NULL,
   `Nombre_variedad` text NOT NULL,
   `Estado` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Volcado de datos para la tabla `variedades`
+-- Volcado de datos para la tabla `variedad`
 --
 
-INSERT INTO `variedades` (`id_variedad`, `id_producto`, `Nombre_variedad`, `Estado`) VALUES
-(1, 2, 'Jamon y queso', 'Disponible'),
-(2, 3, 'Verdura', 'Disponible'),
-(3, 1, 'Mozzarella', 'No disponible'),
-(4, 2, 'Pollo', 'Disponible'),
-(5, 1, 'Napolitana', 'Disponible');
+INSERT INTO `variedad` (`id_variedad`, `Nombre_variedad`, `Estado`) VALUES
+(3, 'Mozzarella', 'No disponible'),
+(4, 'Pollo', 'Disponible'),
+(5, 'Napolitana', 'Disponible'),
+(6, 'Verdura', 'Disponible'),
+(7, 'Humita', 'Disponible');
 
 --
 -- Índices para tablas volcadas
@@ -86,7 +98,8 @@ INSERT INTO `variedades` (`id_variedad`, `id_producto`, `Nombre_variedad`, `Esta
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD PRIMARY KEY (`id_producto`);
+  ADD PRIMARY KEY (`id_producto`),
+  ADD KEY `id_variedad` (`id_variedad`);
 
 --
 -- Indices de la tabla `usuario`
@@ -95,9 +108,9 @@ ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id_usuario`);
 
 --
--- Indices de la tabla `variedades`
+-- Indices de la tabla `variedad`
 --
-ALTER TABLE `variedades`
+ALTER TABLE `variedad`
   ADD PRIMARY KEY (`id_variedad`);
 
 --
@@ -108,19 +121,29 @@ ALTER TABLE `variedades`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_producto` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `variedades`
+-- AUTO_INCREMENT de la tabla `variedad`
 --
-ALTER TABLE `variedades`
-  MODIFY `id_variedad` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `variedad`
+  MODIFY `id_variedad` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `producto`
+--
+ALTER TABLE `producto`
+  ADD CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`id_variedad`) REFERENCES `variedad` (`id_variedad`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
